@@ -1,0 +1,12 @@
+config rustdesk 'global'
+	option data_dir '/root/.rustdesk-server'
+
+config instance 'hbbs'
+	option enabled '0'
+	option bin '/usr/bin/hbbs'
+	option force_auth '1'
+
+config instance 'hbbr'
+	option enabled '0'
+	option bin '/usr/bin/hbbr'
+	option force_auth '1'
