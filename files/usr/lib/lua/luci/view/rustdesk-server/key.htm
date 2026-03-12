@@ -1,0 +1,37 @@
+<%+header%>
+
+<h2><%:RustDesk 服务器 Key%></h2>
+
+<div class="cbi-section">
+    <h3><%:公钥内容%></h3>
+    
+    <%
+    local uci = require "luci.model.uci".cursor()
+    local data_dir = uci:get("rustdesk-server", "global", "data_dir") or "/root/.rustdesk-server"
+    local key_file = data_dir .. "/id_ed25519.pub"
+    
+    local key_content = ""
+    local f = io.open(key_file, "r")
+    if f then
+        key_content = f:read("*all"):gsub("%s+$", "")
+        f:close()
+    end
+    %>
+    
+    <% if key_content == "" then %>
+        <p style="color:red"><%:尚未生成 Key，请先启动服务。%></p>
+    <% else %>
+        <div style="background:#f0f0f0; padding:15px; border:1px solid #ccc; font-family:monospace; word-break:break-all; margin:10px 0;">
+            <%=key_content%>
+        </div>
+        <p><%:将此 Key 填入 RustDesk 客户端“设置 -> 网络”中的 Key 字段。%></p>
+    <% end %>
+    
+    <div class="cbi-page-actions">
+        <input type="button" class="cbi-button cbi-button-reload" 
+               value="<%:刷新%>" 
+               onclick="window.location.href='<%=REQUEST_URI%>'" />
+    </div>
+</div>
+
+<%+footer%>
