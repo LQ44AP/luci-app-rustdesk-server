@@ -1,0 +1,68 @@
+<%+header%>
+
+<h2><%:RustDesk 服务器状态%></h2>
+
+<div class="cbi-section">
+    <h3><%:服务运行状态%></h3>
+    
+    <%
+    local uci = require "luci.model.uci".cursor()
+    local data_dir = uci:get("rustdesk-server", "global", "data_dir") or "/root/.rustdesk-server"
+    
+    local hbbs_running = luci.sys.call("pidof hbbs >/dev/null 2>&1") == 0
+    local hbbr_running = luci.sys.call("pidof hbbr >/dev/null 2>&1") == 0
+    %>
+    
+    <table class="cbi-section-table">
+        <tr class="cbi-section-table-titles">
+            <th class="cbi-section-table-cell"><%:实例%></th>
+            <th class="cbi-section-table-cell"><%:状态%></th>
+            <th class="cbi-section-table-cell"><%:PID%></th>
+        </tr>
+        
+        <tr class="cbi-section-table-row">
+            <td class="cbi-section-table-cell">hbbs</td>
+            <td class="cbi-section-table-cell">
+                <% if hbbs_running then %>
+                    <span style="color:green; font-weight:bold"><%:运行中%></span>
+                <% else %>
+                    <span style="color:red; font-weight:bold"><%:未运行%></span>
+                <% end %>
+            </td>
+            <td class="cbi-section-table-cell">
+                <%= hbbs_running and luci.sys.exec("pidof hbbs") or "-" %>
+            </td>
+        </tr>
+        
+        <tr class="cbi-section-table-row">
+            <td class="cbi-section-table-cell">hbbr</td>
+            <td class="cbi-section-table-cell">
+                <% if hbbr_running then %>
+                    <span style="color:green; font-weight:bold"><%:运行中%></span>
+                <% else %>
+                    <span style="color:red; font-weight:bold"><%:未运行%></span>
+                <% end %>
+            </td>
+            <td class="cbi-section-table-cell">
+                <%= hbbr_running and luci.sys.exec("pidof hbbr") or "-" %>
+            </td>
+        </tr>
+    </table>
+    
+    <div class="cbi-page-actions">
+        <input type="button" class="cbi-button cbi-button-reload" 
+               value="<%:重启服务%>" 
+               onclick="window.location.href='<%=luci.dispatcher.build_url("admin/services/rustdesk-server/restart")%>'" />
+    </div>
+</div>
+
+<div class="cbi-section">
+    <h3><%:防火墙提示%></h3>
+    <p><%:请确保已在 网络 -> 防火墙 -> 通信规则 中开放以下端口：%></p>
+    <ul>
+        <li>TCP: 21115, 21116, 21117, 21118, 21119</li>
+        <li>UDP: 21116</li>
+    </ul>
+</div>
+
+<%+footer%>
