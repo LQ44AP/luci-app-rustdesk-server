@@ -35,7 +35,7 @@ jobs:
           mkdir -p sdk/package/luci-app-rustdesk-server
           # 仅拷贝源码文件，避免将 SDK 自身循环拷贝
           cp -r Makefile files sdk/package/luci-app-rustdesk-server/
-          ls -R sdk/package/luci-app-iptv-scan/
+          ls -R sdk/package/luci-app-rustdesk-server/
 
       - name: Update & Install Feeds
         run: |
