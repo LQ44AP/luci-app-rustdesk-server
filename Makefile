@@ -41,8 +41,7 @@ define Package/luci-app-rustdesk-server/install
 
 	# 安装 CBI 模型
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/cbi/rustdesk-server
-	$(INSTALL_DATA) ./files/usr/lib/lua/luci/model/cbi/rustdesk-server/global.lua $(1)/usr/lib/lua/luci/model/cbi/rustdesk-server/
-	$(INSTALL_DATA) ./files/usr/lib/lua/luci/model/cbi/rustdesk-server/instances.lua $(1)/usr/lib/lua/luci/model/cbi/rustdesk-server/
+	$(INSTALL_DATA) ./files/usr/lib/lua/luci/model/cbi/rustdesk-server/settings.lua $(1)/usr/lib/lua/luci/model/cbi/rustdesk-server/
 
 	# 安装视图模板
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/rustdesk-server
