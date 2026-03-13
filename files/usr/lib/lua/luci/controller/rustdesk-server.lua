@@ -5,6 +5,7 @@ function index()
         return
     end
 
+    -- 主菜单
     entry({"admin", "services", "rustdesk-server"}, 
           alias("admin", "services", "rustdesk-server", "status"), 
           _("RustDesk 服务器"), 95).dependent = true
@@ -12,11 +13,9 @@ function index()
     entry({"admin", "services", "rustdesk-server", "status"},
           template("rustdesk-server/status"), _("状态"), 10).leaf = true
     
-    entry({"admin", "services", "rustdesk-server", "global"},
-          cbi("rustdesk-server/global"), _("全局设置"), 20).leaf = true
-    
-    entry({"admin", "services", "rustdesk-server", "instances"},
-          cbi("rustdesk-server/instances"), _("实例配置"), 30).leaf = true
+    -- 合并后的设置页面（全局 + 实例）
+    entry({"admin", "services", "rustdesk-server", "settings"},
+          cbi("rustdesk-server/settings"), _("设置"), 20).leaf = true
     
     entry({"admin", "services", "rustdesk-server", "key"},
           template("rustdesk-server/key"), _("查看 Key"), 40).leaf = true
@@ -29,3 +28,4 @@ function action_restart()
     luci.sys.call("/etc/init.d/rustdesk-server restart >/dev/null 2>&1 &")
     luci.http.redirect(luci.dispatcher.build_url("admin/services/rustdesk-server/status"))
 end
+
